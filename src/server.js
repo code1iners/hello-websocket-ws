@@ -3,8 +3,8 @@ import express from "express";
 import WebSocket from "ws";
 import cons from "consolidate";
 
+const PORT = 3000;
 const sockets = [];
-
 const app = express();
 
 app.engine("html", cons.swig);
@@ -14,7 +14,9 @@ app.use("/public", express.static(`${__dirname}/public`));
 app.get("/", (req, res) => res.render("home"));
 app.get("/*", (req, res) => res.redirect("/"));
 
-const onListen = () => {};
+const onListen = () => {
+  console.log(`server running on http://localhost:${PORT}.`);
+};
 const onConnection = (socket) => {
   sockets.push(socket);
 
@@ -48,4 +50,4 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 wss.on("connection", onConnection);
 
-server.listen(3000, onListen);
+server.listen(PORT, onListen);
